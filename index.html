@@ -1,11 +1,807 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Website</title>
+    <meta name="description" content="Un Restaurante Peruano con un ambiente moderno, especializado en Ceviche, Pescados, Mariscos, Carnes y Churrasco. Una experiencia para toda la familia en San Juan, Puerto Rico.">
+    <title>Ceviche Market - Cocina Peruana en San Juan</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Custom Tailwind Configuration */
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Lato:wght@300;400;700&display=swap');
+
+        * {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Lato', sans-serif;
+            color: #1A202C;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 300;
+        }
+
+        /* Loading Animation */
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #003366;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.5s ease-out;
+        }
+
+        #loading-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Fish Animation */
+        .fish-container {
+            width: 200px;
+            height: 100px;
+            position: relative;
+        }
+
+        .fish {
+            width: 80px;
+            height: 40px;
+            position: absolute;
+            animation: swim 2s ease-in-out forwards;
+        }
+
+        @keyframes swim {
+            0% {
+                left: -100px;
+                opacity: 0;
+            }
+            50% {
+                left: 60px;
+                opacity: 1;
+            }
+            100% {
+                left: 60px;
+                opacity: 1;
+                transform: scale(1.5);
+            }
+        }
+
+        @keyframes fadeInLogo {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .logo-reveal {
+            animation: fadeInLogo 0.5s ease-in 1.5s forwards;
+            opacity: 0;
+        }
+
+        /* Hero Animation */
+        .hero-content {
+            animation: fadeInUp 1s ease-out 0.3s forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Scroll Reveal Animation */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.5s cubic-bezier(0.645, 0.045, 0.355, 1),
+                        transform 0.5s cubic-bezier(0.645, 0.045, 0.355, 1);
+        }
+
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Button Hover Animation */
+        .cta-button {
+            transition: all 0.3s ease;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Parallax Effect */
+        .parallax {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        /* Menu Item Hover */
+        .menu-item {
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .menu-item img {
+            transition: transform 0.3s ease;
+        }
+
+        .menu-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .menu-item:hover {
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Navbar Scroll Effect */
+        nav.scrolled {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+
+        .mobile-menu.active {
+            max-height: 500px;
+        }
+
+        /* Gallery Grid */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+
+        @media (min-width: 768px) {
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .gallery-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        /* Custom Colors */
+        .bg-primary {
+            background-color: #003366;
+        }
+
+        .text-primary {
+            color: #003366;
+        }
+
+        .bg-accent {
+            background-color: #FF6B6B;
+        }
+
+        .text-accent {
+            color: #FF6B6B;
+        }
+
+        .bg-light {
+            background-color: #F8F8F8;
+        }
+
+        .text-secondary {
+            color: #718096;
+        }
+    </style>
 </head>
-<body>
-    <!-- Content will be added here -->
+<body class="bg-white">
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="fish-container">
+            <svg class="fish" viewBox="0 0 100 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10 25 Q 30 15, 50 25 Q 30 35, 10 25 M 50 25 L 90 25 M 90 15 L 90 35"
+                      stroke="#FF6B6B" stroke-width="2" stroke-linecap="round"/>
+                <circle cx="70" cy="25" r="3" fill="#FFFFFF"/>
+            </svg>
+            <div class="logo-reveal text-white text-center mt-8">
+                <h2 class="text-3xl font-light">Ceviche Market</h2>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 bg-transparent">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0">
+                    <a href="#home" class="text-2xl font-light text-white nav-logo">
+                        <span class="font-semibold">Ceviche</span> Market
+                    </a>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#historia" class="nav-link text-white hover:text-accent transition-colors">Nuestra Historia</a>
+                    <a href="#menu" class="nav-link text-white hover:text-accent transition-colors">Menú</a>
+                    <a href="#galeria" class="nav-link text-white hover:text-accent transition-colors">Galería</a>
+                    <a href="#contacto" class="nav-link text-white hover:text-accent transition-colors">Contacto</a>
+                    <a href="tel:7876802238" class="cta-button bg-accent text-white px-6 py-2 rounded-full font-semibold">
+                        Reservar
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="md:hidden text-white focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="mobile-menu md:hidden bg-white rounded-lg mt-2">
+                <div class="px-4 py-6 space-y-4">
+                    <a href="#historia" class="block text-primary hover:text-accent transition-colors">Nuestra Historia</a>
+                    <a href="#menu" class="block text-primary hover:text-accent transition-colors">Menú</a>
+                    <a href="#galeria" class="block text-primary hover:text-accent transition-colors">Galería</a>
+                    <a href="#contacto" class="block text-primary hover:text-accent transition-colors">Contacto</a>
+                    <a href="tel:7876802238" class="block bg-accent text-white px-6 py-3 rounded-full font-semibold text-center">
+                        Reservar
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="relative h-screen flex items-center justify-center overflow-hidden">
+        <!-- Hero Image Background -->
+        <div class="absolute inset-0 z-0">
+            <img src="./assets/image_0.png" alt="Ceviche fresco" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-r from-blue-900/80 via-blue-900/50 to-transparent"></div>
+        </div>
+
+        <!-- Hero Content -->
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+            <div class="max-w-2xl hero-content">
+                <h1 class="text-5xl md:text-7xl text-white font-light mb-6 leading-tight">
+                    Ceviche Market
+                    <span class="block text-3xl md:text-4xl mt-4 text-accent">Cocina Peruana</span>
+                </h1>
+                <p class="text-xl md:text-2xl text-white/90 mb-8 font-light">
+                    El Mercado a su Mesa
+                </p>
+                <p class="text-lg text-white/80 mb-10 max-w-xl">
+                    Descubra los auténticos sabores del Perú en San Juan. Especialistas en ceviche fresco, pescados, mariscos y la mejor cocina peruana.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a href="tel:7876802238" class="cta-button bg-accent text-white px-8 py-4 rounded-full font-semibold text-lg text-center">
+                        Reservar Mesa
+                    </a>
+                    <a href="#menu" class="cta-button bg-white/20 backdrop-blur-sm text-white border-2 border-white px-8 py-4 rounded-full font-semibold text-lg text-center">
+                        Ver Menú
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+            </svg>
+        </div>
+    </section>
+
+    <!-- La Frescura del Mercado Section -->
+    <section id="frescura" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="scroll-reveal">
+                    <h2 class="text-4xl md:text-5xl text-primary mb-6">
+                        La Frescura del Mercado
+                    </h2>
+                    <p class="text-lg text-secondary leading-relaxed mb-6">
+                        En Ceviche Market, cada platillo cuenta la historia del mar. Seleccionamos diariamente los ingredientes más frescos, directamente del mercado a su mesa, honrando la tradición culinaria peruana con cada bocado.
+                    </p>
+                    <p class="text-lg text-secondary leading-relaxed mb-6">
+                        Nuestro compromiso con la calidad y la autenticidad nos convierte en el destino preferido para los amantes de la cocina peruana en San Juan. Cada ceviche es una obra maestra, cada plato una celebración de sabores.
+                    </p>
+                    <div class="flex items-center gap-4 mt-8">
+                        <div class="border-l-4 border-accent pl-4">
+                            <p class="text-2xl font-semibold text-primary">100%</p>
+                            <p class="text-sm text-secondary">Ingredientes Frescos</p>
+                        </div>
+                        <div class="border-l-4 border-accent pl-4">
+                            <p class="text-2xl font-semibold text-primary">14+</p>
+                            <p class="text-sm text-secondary">Años de Experiencia</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="scroll-reveal">
+                    <img src="./assets/image_1.png" alt="Ingredientes frescos" class="w-full h-[500px] object-cover rounded-lg shadow-2xl">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Nuestra Historia Section -->
+    <section id="historia" class="py-20 bg-light">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-4xl mx-auto text-center scroll-reveal">
+                <h2 class="text-4xl md:text-5xl text-primary mb-8">
+                    Nuestra Historia
+                </h2>
+                <div class="text-lg text-secondary leading-relaxed space-y-6">
+                    <p>
+                        Ceviche Market nació de una pasión profunda por compartir los auténticos sabores del Perú con la vibrante comunidad de San Juan. Inspirados en los bulliciosos mercados de pescado de Lima, donde el ceviche más fresco se prepara con maestría, creamos un espacio donde la tradición y la modernidad se encuentran.
+                    </p>
+                    <p>
+                        Cada platillo en nuestro menú es un homenaje a las recetas tradicionales peruanas, preparadas con técnicas ancestrales pero presentadas con un toque contemporáneo. Desde el clásico ceviche hasta nuestros platos de mariscos y carnes, cada ingrediente es cuidadosamente seleccionado para garantizar la experiencia culinaria más auténtica.
+                    </p>
+                    <p>
+                        Más que un restaurante, somos un puente cultural que conecta los sabores del Pacífico peruano con el Caribe, ofreciendo una experiencia gastronómica única para familias y amantes de la buena comida.
+                    </p>
+                </div>
+                <div class="mt-12 inline-block bg-white px-8 py-6 rounded-lg shadow-lg">
+                    <p class="text-2xl text-accent font-light italic">
+                        "Del mercado a su mesa, con amor y tradición"
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section id="menu" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 scroll-reveal">
+                <h2 class="text-4xl md:text-5xl text-primary mb-4">
+                    Nuestro Menú
+                </h2>
+                <p class="text-xl text-secondary max-w-2xl mx-auto">
+                    Explore nuestra selección de platillos auténticos peruanos, preparados con los ingredientes más frescos
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Menu Item 1 -->
+                <div class="menu-item bg-white rounded-lg overflow-hidden shadow-lg scroll-reveal">
+                    <div class="h-64 overflow-hidden">
+                        <img src="./assets/image_0.png" alt="Ceviche Clásico" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-2xl text-primary mb-3">Ceviches</h3>
+                        <p class="text-secondary mb-4">
+                            Nuestro ceviche clásico preparado con pescado fresco del día, marinado en limón, ají limo, cilantro y cebolla morada. Una explosión de frescura en cada bocado.
+                        </p>
+                        <ul class="text-sm text-secondary space-y-2">
+                            <li>• Ceviche Clásico</li>
+                            <li>• Ceviche Mixto</li>
+                            <li>• Ceviche de Pulpo</li>
+                            <li>• Leche de Tigre</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Menu Item 2 -->
+                <div class="menu-item bg-white rounded-lg overflow-hidden shadow-lg scroll-reveal">
+                    <div class="h-64 overflow-hidden">
+                        <img src="./assets/image_1.png" alt="Pescados y Mariscos" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-2xl text-primary mb-3">Pescados y Mariscos</h3>
+                        <p class="text-secondary mb-4">
+                            Selección premium de pescados y mariscos frescos, preparados con técnicas tradicionales peruanas. Cada platillo es una celebración del mar.
+                        </p>
+                        <ul class="text-sm text-secondary space-y-2">
+                            <li>• Arroz con Mariscos</li>
+                            <li>• Sudado de Pescado</li>
+                            <li>• Jalea Mixta</li>
+                            <li>• Parihuela</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Menu Item 3 -->
+                <div class="menu-item bg-white rounded-lg overflow-hidden shadow-lg scroll-reveal">
+                    <div class="h-64 bg-gradient-to-br from-primary to-blue-800 flex items-center justify-center">
+                        <svg class="w-32 h-32 text-white opacity-50" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"/>
+                        </svg>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-2xl text-primary mb-3">Platos de Fondo</h3>
+                        <p class="text-secondary mb-4">
+                            Carnes jugosas y platos tradicionales peruanos que satisfacen los paladares más exigentes. El sabor auténtico del Perú.
+                        </p>
+                        <ul class="text-sm text-secondary space-y-2">
+                            <li>• Lomo Saltado</li>
+                            <li>• Ají de Gallina</li>
+                            <li>• Churrasco Peruano</li>
+                            <li>• Mofongo Relleno</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Menu Item 4 -->
+                <div class="menu-item bg-white rounded-lg overflow-hidden shadow-lg scroll-reveal">
+                    <div class="h-64 bg-gradient-to-br from-accent to-red-400 flex items-center justify-center">
+                        <svg class="w-32 h-32 text-white opacity-50" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3z"/>
+                        </svg>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-2xl text-primary mb-3">Entradas</h3>
+                        <p class="text-secondary mb-4">
+                            Comience su experiencia culinaria con nuestras deliciosas entradas peruanas, perfectas para compartir.
+                        </p>
+                        <ul class="text-sm text-secondary space-y-2">
+                            <li>• Causa Limeña</li>
+                            <li>• Anticuchos</li>
+                            <li>• Papa a la Huancaína</li>
+                            <li>• Chicharrón de Calamar</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Menu Item 5 -->
+                <div class="menu-item bg-white rounded-lg overflow-hidden shadow-lg scroll-reveal">
+                    <div class="h-64 bg-gradient-to-br from-yellow-400 to-orange-400 flex items-center justify-center">
+                        <svg class="w-32 h-32 text-white opacity-50" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M10 2a1 1 0 011 1v1.323l3.954 1.582 1.599-.8a1 1 0 01.894 1.79l-1.233.616 1.738 5.42a1 1 0 01-.285 1.05A3.989 3.989 0 0115 15a3.989 3.989 0 01-2.667-1.019 1 1 0 01-.285-1.05l1.715-5.349L11 6.477V16h2a1 1 0 110 2H7a1 1 0 110-2h2V6.477L6.237 7.582l1.715 5.349a1 1 0 01-.285 1.05A3.989 3.989 0 015 15a3.989 3.989 0 01-2.667-1.019 1 1 0 01-.285-1.05l1.738-5.42-1.233-.617a1 1 0 01.894-1.788l1.599.799L9 4.323V3a1 1 0 011-1z"/>
+                        </svg>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-2xl text-primary mb-3">Bebidas</h3>
+                        <p class="text-secondary mb-4">
+                            Acompañe su comida con nuestras refrescantes bebidas tradicionales y selección de vinos finos.
+                        </p>
+                        <ul class="text-sm text-secondary space-y-2">
+                            <li>• Chicha Morada</li>
+                            <li>• Pisco Sour</li>
+                            <li>• Inca Kola</li>
+                            <li>• Selección de Vinos</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Menu Item 6 -->
+                <div class="menu-item bg-white rounded-lg overflow-hidden shadow-lg scroll-reveal">
+                    <div class="h-64 bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center">
+                        <svg class="w-32 h-32 text-white opacity-50" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/>
+                            <path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm9.707 5.707a1 1 0 00-1.414-1.414L9 12.586l-1.293-1.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                        </svg>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-2xl text-primary mb-3">Postres</h3>
+                        <p class="text-secondary mb-4">
+                            Termine su experiencia con un toque dulce. Postres tradicionales peruanos que deleitarán su paladar.
+                        </p>
+                        <ul class="text-sm text-secondary space-y-2">
+                            <li>• Suspiro Limeño</li>
+                            <li>• Mazamorra Morada</li>
+                            <li>• Picarones</li>
+                            <li>• Tres Leches</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-12 scroll-reveal">
+                <a href="tel:7876802238" class="cta-button inline-block bg-accent text-white px-10 py-4 rounded-full font-semibold text-lg">
+                    Llamar para Reservar
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="galeria" class="py-20 bg-light">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 scroll-reveal">
+                <h2 class="text-4xl md:text-5xl text-primary mb-4">
+                    Galería
+                </h2>
+                <p class="text-xl text-secondary max-w-2xl mx-auto">
+                    Un vistazo a nuestra cocina y la experiencia que le espera
+                </p>
+            </div>
+
+            <div class="gallery-grid">
+                <div class="scroll-reveal overflow-hidden rounded-lg shadow-lg h-80">
+                    <img src="./assets/image_0.png" alt="Ceviche fresco" class="w-full h-full object-cover hover:scale-110 transition-transform duration-300">
+                </div>
+                <div class="scroll-reveal overflow-hidden rounded-lg shadow-lg h-80">
+                    <img src="./assets/image_1.png" alt="Plato de mariscos" class="w-full h-full object-cover hover:scale-110 transition-transform duration-300">
+                </div>
+                <div class="scroll-reveal overflow-hidden rounded-lg shadow-lg h-80">
+                    <img src="./assets/image_0.png" alt="Ambiente del restaurante" class="w-full h-full object-cover hover:scale-110 transition-transform duration-300">
+                </div>
+                <div class="scroll-reveal overflow-hidden rounded-lg shadow-lg h-80">
+                    <img src="./assets/image_1.png" alt="Preparación de ceviche" class="w-full h-full object-cover hover:scale-110 transition-transform duration-300">
+                </div>
+                <div class="scroll-reveal overflow-hidden rounded-lg shadow-lg h-80">
+                    <img src="./assets/image_0.png" alt="Detalles gastronómicos" class="w-full h-full object-cover hover:scale-110 transition-transform duration-300">
+                </div>
+                <div class="scroll-reveal overflow-hidden rounded-lg shadow-lg h-80">
+                    <img src="./assets/image_1.png" alt="Experiencia culinaria" class="w-full h-full object-cover hover:scale-110 transition-transform duration-300">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contacto" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 scroll-reveal">
+                <h2 class="text-4xl md:text-5xl text-primary mb-4">
+                    Contáctenos
+                </h2>
+                <p class="text-xl text-secondary max-w-2xl mx-auto">
+                    Visite nuestro restaurante o contáctenos para reservaciones
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-12">
+                <!-- Contact Info -->
+                <div class="scroll-reveal space-y-8">
+                    <div class="flex items-start space-x-4">
+                        <div class="bg-accent/10 p-4 rounded-full">
+                            <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-primary mb-2">Dirección</h3>
+                            <p class="text-secondary">667 PR-25<br>San Juan, 00907<br>Puerto Rico</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start space-x-4">
+                        <div class="bg-accent/10 p-4 rounded-full">
+                            <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-primary mb-2">Teléfono</h3>
+                            <p class="text-secondary">
+                                <a href="tel:7876802238" class="hover:text-accent transition-colors">(787) 680-2238</a><br>
+                                <a href="tel:9395455150" class="hover:text-accent transition-colors">(939) 545-5150</a>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start space-x-4">
+                        <div class="bg-accent/10 p-4 rounded-full">
+                            <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-primary mb-2">Horario</h3>
+                            <p class="text-secondary">
+                                Lunes - Jueves: 11:00 AM - 9:00 PM<br>
+                                Viernes - Sábado: 11:00 AM - 10:00 PM<br>
+                                Domingo: 12:00 PM - 8:00 PM
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="pt-6">
+                        <h3 class="text-xl font-semibold text-primary mb-4">Síguenos</h3>
+                        <div class="flex space-x-4">
+                            <a href="#" class="bg-primary text-white p-3 rounded-full hover:bg-accent transition-colors">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                                </svg>
+                            </a>
+                            <a href="#" class="bg-primary text-white p-3 rounded-full hover:bg-accent transition-colors">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                                </svg>
+                            </a>
+                            <a href="#" class="bg-primary text-white p-3 rounded-full hover:bg-accent transition-colors">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Map Placeholder -->
+                <div class="scroll-reveal">
+                    <div class="bg-gray-200 rounded-lg h-full min-h-[400px] flex items-center justify-center">
+                        <div class="text-center p-8">
+                            <svg class="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            </svg>
+                            <p class="text-gray-600 mb-4">667 PR-25, San Juan, 00907</p>
+                            <a href="https://maps.google.com/?q=667+PR-25+San+Juan+00907+Puerto+Rico" target="_blank" rel="noopener" class="cta-button inline-block bg-accent text-white px-6 py-3 rounded-full font-semibold">
+                                Ver en Google Maps
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-primary text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Contact Info -->
+                <div>
+                    <h3 class="text-2xl font-light mb-4">Ceviche Market</h3>
+                    <p class="text-white/80 mb-4">Cocina Peruana Auténtica</p>
+                    <p class="text-white/70 text-sm">
+                        667 PR-25<br>
+                        San Juan, 00907<br>
+                        Puerto Rico
+                    </p>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Enlaces Rápidos</h4>
+                    <ul class="space-y-2 text-white/80">
+                        <li><a href="#home" class="hover:text-accent transition-colors">Inicio</a></li>
+                        <li><a href="#historia" class="hover:text-accent transition-colors">Nuestra Historia</a></li>
+                        <li><a href="#menu" class="hover:text-accent transition-colors">Menú</a></li>
+                        <li><a href="#galeria" class="hover:text-accent transition-colors">Galería</a></li>
+                        <li><a href="#contacto" class="hover:text-accent transition-colors">Contacto</a></li>
+                    </ul>
+                </div>
+
+                <!-- Newsletter -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Mantente Informado</h4>
+                    <p class="text-white/80 text-sm mb-4">Suscríbete para recibir noticias y promociones especiales</p>
+                    <form class="flex flex-col gap-2">
+                        <input type="email" placeholder="Tu email" class="px-4 py-2 rounded-full text-gray-800 focus:outline-none focus:ring-2 focus:ring-accent">
+                        <button type="submit" class="cta-button bg-accent text-white px-6 py-2 rounded-full font-semibold">
+                            Suscribirse
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="border-t border-white/20 mt-8 pt-8 text-center text-white/70 text-sm">
+                <p>&copy; 2025 Ceviche Market Cocina Peruana. Todos los derechos reservados.</p>
+                <p class="mt-2">Tel: <a href="tel:7876802238" class="hover:text-accent transition-colors">(787) 680-2238</a> | <a href="tel:9395455150" class="hover:text-accent transition-colors">(939) 545-5150</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Loading Screen
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                document.getElementById('loading-screen').classList.add('hidden');
+            }, 2000);
+        });
+
+        // Navbar Scroll Effect
+        const navbar = document.getElementById('navbar');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const navLogo = document.querySelector('.nav-logo');
+
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 100) {
+                navbar.classList.add('scrolled');
+                navLinks.forEach(link => {
+                    link.classList.remove('text-white');
+                    link.classList.add('text-primary');
+                });
+                navLogo.classList.remove('text-white');
+                navLogo.classList.add('text-primary');
+            } else {
+                navbar.classList.remove('scrolled');
+                navLinks.forEach(link => {
+                    link.classList.remove('text-primary');
+                    link.classList.add('text-white');
+                });
+                navLogo.classList.remove('text-primary');
+                navLogo.classList.add('text-white');
+            }
+        });
+
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuBtn.addEventListener('click', function() {
+            mobileMenu.classList.toggle('active');
+        });
+
+        // Close mobile menu when clicking a link
+        const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+        mobileMenuLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                mobileMenu.classList.remove('active');
+            });
+        });
+
+        // Scroll Reveal Animation
+        const scrollRevealElements = document.querySelectorAll('.scroll-reveal');
+
+        const revealOnScroll = function() {
+            scrollRevealElements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+
+                if (elementTop < windowHeight - 100) {
+                    element.classList.add('revealed');
+                }
+            });
+        };
+
+        window.addEventListener('scroll', revealOnScroll);
+        revealOnScroll(); // Initial check
+
+        // Smooth Scroll for Anchor Links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Form Submission (Newsletter)
+        const newsletterForm = document.querySelector('footer form');
+        if (newsletterForm) {
+            newsletterForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const email = this.querySelector('input[type="email"]').value;
+                alert('¡Gracias por suscribirte! Pronto recibirás nuestras novedades en ' + email);
+                this.reset();
+            });
+        }
+    </script>
 </body>
 </html>
